@@ -23,8 +23,10 @@ class GenericRecommender:
 
         with tqdm(total=self.dataset['userId'].nunique(), desc="Recommending for users: ") as pbar:
             for user_id, user_ratings in ratings:
-                recommendations = recommendations \
-                    .append(self.recommend_user(user_id, user_ratings))
+                recommendations = pd.concat([
+                    recommendations,
+                    self.recommend_user(user_id, user_ratings)],
+                    ignore_index=True)
                 pbar.update()
 
         return recommendations

@@ -107,7 +107,7 @@ class Splitter:
 
         neg_sample = self.sample_negative(data, negative_sample_size)
 
-        return train, test.append(neg_sample)
+        return train, pd.concat([test, neg_sample], ignore_index=True)
 
     @staticmethod
     def sample_negative(data, negative_sample_size):
