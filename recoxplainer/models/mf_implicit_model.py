@@ -24,8 +24,10 @@ class MFImplicitModel:
     @staticmethod
     def rearrange_dataset(ds, num_user, num_item):
         # todo: fix the max to something less troublesome.
-        ds_mtr = scipy.sparse.csr_matrix((num_item, num_user))
-        ds_mtr[ds['itemId'], ds['userId']] = 1
+        # ds_mtr = scipy.sparse.csr_matrix((num_item, num_user))
+        # ds_mtr[ds['itemId'], ds['userId']] = 1
+        ds_mtr = scipy.sparse.csr_matrix(( num_user, num_item))
+        ds_mtr[ds['userId'], ds['itemId']] = 1
 
         return ds_mtr
 

@@ -36,7 +36,7 @@ class DataReader:
     def dataset(self, new_data):
         self._dataset = new_data
 
-    def make_consecutive_ids_in_dataset(self):
+    def make_consecutive_ids_in_dataset(self, data_cols = ['userId', 'itemId', 'rating', 'timestamp']):
         # TODO: create mapping function
         dataset = self.dataset.rename({
             "userId": "user_id",
@@ -64,9 +64,7 @@ class DataReader:
         self.new_user_id = user_id.set_index('user_id')
         self.new_item_id = item_id.set_index('item_id')
 
-        self._dataset = self.dataset[
-            ['userId', 'itemId', 'rating', 'timestamp']
-        ]
+        self._dataset = self.dataset[data_cols]
 
         self._dataset.userId = [int(i) for i in self._dataset.userId]
         self._dataset.itemId = [int(i) for i in self._dataset.itemId]
