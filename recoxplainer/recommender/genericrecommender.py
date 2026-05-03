@@ -34,7 +34,7 @@ class GenericRecommender:
                 unrated = self.get_unrated(user_ratings['itemId'])
                 item_model_df.loc[unrated]
                 recommendations = scores[i][item_model_df.loc[unrated]["model_id"].tolist()].topk(10)
-                recommendations = model_item_map_df['itemId'].iloc[recommendations[1]].tolist()
+                recommendations = model_item_map_df['itemId'].iloc[recommendations[1].tolist()].tolist()
                 recommendations_data += [
                     {
                         "userId": user_id,
