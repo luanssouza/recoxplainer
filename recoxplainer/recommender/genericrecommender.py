@@ -10,14 +10,42 @@ class GenericRecommender:
         self.model = model
         self.catalogue = set(self.dataset['itemId'])
 
-    def recommend_all(self):
+    def recommend_all(self, full_sort = False):
         """
         Get all recommendations.
         :param top_n:
         :return: recommendations for any user.
         """
 
-        ratings = self.dataset.groupby('userId')
+        sorted_df = self.dataset.sort_values(by=["userId"])
+        ratings = sorted_df.groupby('userId', sort=True)
+
+        if full_sort:
+            item_model_df = self.model.recoxplainer_dataset.original_item_id.copy()
+            item_model_df["model_id"] = item_model_df["item_id"].apply(str)\
+                .map(self.model.recbole_dataset.field2token_id[self.model.recbole_dataset.iid_field])
+            model_item_map_df = item_model_df.reset_index().set_index("model_id")
+
+            scores = self.model.full_sort_predict(sorted_df["userId"].unique())
+
+            i = 0
+            recommendations_data = []
+            for user_id, user_ratings in ratings:
+                unrated = self.get_unrated(user_ratings['itemId'])
+                item_model_df.loc[unrated]
+                recommendations = scores[i][item_model_df.loc[unrated]["model_id"].tolist()].topk(10)
+                recommendations = model_item_map_df['itemId'].iloc[recommendations[1]].tolist()
+                recommendations_data += [
+                    {
+                        "userId": user_id,
+                        "itemId": item_id,
+                        "rank": rank+1
+                    }
+                    for rank, item_id in enumerate(recommendations)
+                ]
+                i += 1
+            recommendations_df = pd.DataFrame(recommendations_data).astype(float)
+            return recommendations_df
 
         recommendations = pd.DataFrame({'userId': [], 'itemId': [], 'rank': []})
 
