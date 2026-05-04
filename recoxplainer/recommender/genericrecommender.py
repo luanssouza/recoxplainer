@@ -32,7 +32,7 @@ class GenericRecommender:
             batch_size = 1000  # Adjust based on available memory
             recommendations_df = pd.DataFrame({'userId': [], 'itemId': [], 'rank': []})
             
-            for batch_start in range(0, num_users, batch_size):
+            for batch_start in tqdm(range(0, num_users, batch_size), desc="Processing batches"):
                 batch_end = min(batch_start + batch_size, num_users)
                 batch_uids = uids[batch_start:batch_end]
 
