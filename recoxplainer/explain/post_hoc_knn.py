@@ -29,7 +29,7 @@ class KNNPostHocExplainer(Explainer):
     def compute_knn_items_for_all_items(self):
 
         ds = np.zeros((self.num_items, self.num_users))
-        ds[self.dataset.itemId, self.dataset.userId] = self.dataset.rating
+        ds[self.dataset.itemId, self.dataset.userId] = self.dataset.rating.fillna(0) # preventing NaN values in the similarity matrix
 
         ds = sparse.csr_matrix(ds)
         sim_matrix = cosine_similarity(ds)
