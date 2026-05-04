@@ -10,7 +10,7 @@ class GenericRecommender:
         self.model = model
         self.catalogue = set(self.dataset['itemId'])
 
-    def recommend_all(self, full_sort = False):
+    def recommend_all(self, full_sort = False, batch_size = 1000):
         """
         Get all recommendations.
         :param top_n:
@@ -29,7 +29,6 @@ class GenericRecommender:
             # Process users in batches to manage memory usage
             uids = sorted_df["userId"].unique().tolist()
             num_users = len(uids)
-            batch_size = 1000  # Adjust based on available memory
             recommendations_df = pd.DataFrame({'userId': [], 'itemId': [], 'rank': []})
             
             for batch_start in tqdm(range(0, num_users, batch_size), desc="Processing batches"):
