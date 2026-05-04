@@ -40,14 +40,14 @@ class GenericRecommender:
 
                 i = 0
                 recommendations_data = []
-                for user_id, user_ratings in ratings:
-                    unrated = self.get_unrated(user_ratings['itemId'])
+                for uid in batch_uids:
+                    unrated = self.get_unrated(ratings.get_group(uid)['itemId'])
                     item_model_df.loc[unrated]
                     recommendations = scores[i][item_model_df.loc[unrated]["model_id"].tolist()].topk(10)
                     recommendations = model_item_map_df['itemId'].iloc[recommendations[1].tolist()].tolist()
                     recommendations_data += [
                         {
-                            "userId": user_id,
+                            "userId": uid,
                             "itemId": item_id,
                             "rank": rank+1
                         }
