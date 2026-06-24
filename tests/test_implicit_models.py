@@ -1,6 +1,6 @@
 import unittest
 
-from recoxplainer.config import cfg
+from recoxplainer.config import load_config
 from recoxplainer.data_reader.data_reader import DataReader
 from recoxplainer.models.als_model import ALS
 from recoxplainer.models.bpr_model import BPR
@@ -10,6 +10,7 @@ from recoxplainer.recommender import Recommender
 class ALSTest(unittest.TestCase):
 
     def setUp(self):
+        cfg = load_config("configs/config.yml")
         self.als = ALS(**cfg.model.als)
         self.bpr = BPR(**cfg.model.bpr)
         self.data = DataReader(**cfg.testdata)

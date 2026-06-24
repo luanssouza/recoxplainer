@@ -1,6 +1,6 @@
 import unittest
 
-from recoxplainer.config import cfg
+from recoxplainer.config import load_config
 from recoxplainer.data_reader.data_reader import DataReader
 from recoxplainer.data_reader.user_item_dict import UserItemDict
 
@@ -8,6 +8,7 @@ from recoxplainer.data_reader.user_item_dict import UserItemDict
 class UserItemMatrixTest(unittest.TestCase):
 
     def setUp(self) -> None:
+        cfg = load_config("configs/config.yml")
         self.data = DataReader(**cfg.testdata)
         self.data.make_consecutive_ids_in_dataset()
 

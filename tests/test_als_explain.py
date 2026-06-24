@@ -1,6 +1,6 @@
 import unittest
 
-from recoxplainer.config import cfg
+from recoxplainer.config import load_config
 from recoxplainer.data_reader import DataReader
 from recoxplainer.models import ALS
 from recoxplainer.explain import ALSExplainer
@@ -12,6 +12,7 @@ from recoxplainer.explain import ARPostHocExplainer, KNNPostHocExplainer
 class ALSTest(unittest.TestCase):
 
     def setUp(self):
+        cfg = load_config("configs/config.yml")
         self.als = ALS(**cfg.model.als)
 
         self.data = DataReader(**cfg.ml100k)

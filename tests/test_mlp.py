@@ -1,6 +1,6 @@
 import unittest
 
-from recoxplainer.config import cfg
+from recoxplainer.config import load_config
 from recoxplainer.data_reader.data_reader import DataReader
 from recoxplainer.models.mlp_model import MLPModel
 from recoxplainer.recommender import Recommender
@@ -9,6 +9,7 @@ from recoxplainer.recommender import Recommender
 class MLPTest(unittest.TestCase):
 
     def setUp(self) -> None:
+        cfg = load_config("configs/config.yml")
         self.mlp = MLPModel(**cfg.model.mlp)
         self.data = DataReader(**cfg.testdata)
         self.data.make_consecutive_ids_in_dataset()
